@@ -1,13 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project 2</title>
-  <link rel="stylesheet" href="/styles/main.css">
-</head>
-<body>
-  <div id="app"></div>
-  <script type="module" src="/js/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LiveLy - Live Performance Reviews</title>
+    <link rel="stylesheet" href="/public/styles/home.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/js/main.js"></script>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="container header-content">
+        <div class="logo">🎤 LiveLy</div>
+        <nav class="navbar">
+          <ul>
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/login.html">Login</a></li>
+            <li><a href="/register.html">Register</a></li>
+            <li><a href="/admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===== HERO / WELCOME ===== -->
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="welcome">
+          <h1>Welcome to LiveLy</h1>
+          <p>
+            Discover how your favorite artists perform live. Read and share
+            reviews from fans around the world.
+          </p>
+        </div>
+        <div class="search">
+          <input
+            type="text"
+            id="artistSearch"
+            placeholder="Search for an artist..."
+          />
+          <button id="searchBtn">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TOP ARTISTS SECTION ===== -->
+    <section class="top-artists">
+      <div class="container">
+        <h2>Top Artists</h2>
+        <div class="artist-grid" id="artistList">
+          <!-- Artist cards will be loaded dynamically -->
+          <div class="artist-card">Artist 1</div>
+          <div class="artist-card">Artist 2</div>
+          <div class="artist-card">Artist 3</div>
+          <div class="artist-card">Artist 4</div>
+          <div class="artist-card">Artist 5</div>
+          <div class="artist-card">Artist 6</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <p>© 2025 LiveLy | Built by Brandan Yong and Eric Fu</p>
+    </footer>
+  </body>
 </html>
