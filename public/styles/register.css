@@ -1,0 +1,158 @@
+/* Base */
+:root {
+  --bg: #fafafa;
+  --ink: #222;
+  --ink-dim: #555;
+  --brand: #ff4e50;
+  --brand-dark: #e23c3e;
+  --panel: #fff;
+  --line: #eaeaea;
+  --accent: #111;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+.container {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  background: #111;
+  color: #fff;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+.logo {
+  font-weight: 700;
+}
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navbar a.active,
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Auth */
+.auth-wrap {
+  display: grid;
+  place-items: center;
+  min-height: calc(100dvh - 140px);
+  padding: 2rem 0;
+}
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.auth-card h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+}
+.sub {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--ink-dim);
+}
+
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.field.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+label {
+  font-weight: 600;
+}
+input[type='email'],
+input[type='password'] {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: var(--ink);
+}
+input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(255, 78, 80, 0.2);
+}
+.hint {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+.error {
+  color: #c62828;
+  font-size: 0.85rem;
+  min-height: 1.1em;
+}
+.form-status {
+  margin-top: 1rem;
+  min-height: 1.1em;
+  font-size: 0.95rem;
+}
+
+/* Button */
+.btn {
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+}
+.btn:hover {
+  background: var(--brand-dark);
+}
+
+/* Footer */
+.footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+}
+.alt {
+  margin-top: 1rem;
+  text-align: center;
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | LiveLy</title>
+    <link rel="stylesheet" href="styles/register.css" />
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="container header-content">
+        <div class="logo">🎤 LiveLy</div>
+        <nav class="navbar">
+          <ul>
+            <li><a href="browse.html">Browse Artists</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a class="active" href="register.html">Register</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===== AUTH CARD ===== -->
+    <main class="container auth-wrap">
+      <section class="auth-card">
+        <h1>Create your account</h1>
+        <p class="sub">
+          Join LiveLy to leave and manage your live performance reviews.
+        </p>
+
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <label for="email">Email<span aria-hidden="true">*</span></label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+            <small class="error" id="emailError"></small>
+          </div>
+
+          <div class="field">
+            <label for="password"
+              >Password<span aria-hidden="true">*</span></label
+            >
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="6"
+              placeholder="••••••••"
+              required
+            />
+            <small class="hint">Min 6 characters.</small>
+            <small class="error" id="passwordError"></small>
+          </div>
+
+          <div class="field">
+            <label for="confirm"
+              >Confirm Password<span aria-hidden="true">*</span></label
+            >
+            <input
+              id="confirm"
+              name="confirm"
+              type="password"
+              minlength="6"
+              placeholder="••••••••"
+              required
+            />
+            <small class="error" id="confirmError"></small>
+          </div>
+
+          <div class="field checkbox">
+            <input id="tos" name="tos" type="checkbox" required />
+            <label for="tos">I agree to the Terms of Service</label>
+            <small class="error" id="tosError"></small>
+          </div>
+
+          <button class="btn" type="submit">Create account</button>
+          <div
+            class="form-status"
+            id="formStatus"
+            role="alert"
+            aria-live="polite"
+          ></div>
+        </form>
+
+        <p class="alt">
+          Already have an account? <a href="login.html">Log in</a>
+        </p>
+      </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <p>© 2025 LiveLy | Built by Brandan Yong and Eric Fu</p>
+    </footer>
+
+    <script type="module" src="js/register.js"></script>
+  </body>
+</html>
