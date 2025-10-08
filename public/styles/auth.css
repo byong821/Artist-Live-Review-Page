@@ -156,3 +156,16 @@ input:focus {
   margin-top: 1rem;
   text-align: center;
 }
+
+/* Login-specific tweaks */
+.auth-card h1 {
+  color: var(--brand);
+}
+
+.auth-card .btn {
+  background: var(--accent);
+}
+
+.auth-card .btn:hover {
+  background: #333;
+}
