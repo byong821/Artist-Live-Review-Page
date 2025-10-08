@@ -14,6 +14,7 @@
         <nav class="navbar">
           <ul>
             <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="browse.html">Browse Artists</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a class="active" href="register.html">Register</a></li>
@@ -23,17 +24,30 @@
       </div>
     </header>
 
-    <!-- ===== AUTH CARD ===== -->
+    <!-- Spinning Vinyl Background -->
+    <img src="img/vinyl.png" alt="Spinning vinyl record" class="vinyl-img" />
+    <img src="img/needle.png" alt="Record Player Needle" class="needle-img" />
+
+    <!-- ===== REGISTER FORM ===== -->
     <main class="container auth-wrap">
       <section class="auth-card">
-        <h1>Create your account</h1>
-        <p class="sub">
-          Join LiveLy to leave and manage your live performance reviews.
-        </p>
+        <h1>Create an Account</h1>
+        <p class="sub">Join the LiveLy community and start sharing reviews.</p>
 
         <form id="registerForm" novalidate>
           <div class="field">
-            <label for="email">Email<span aria-hidden="true">*</span></label>
+            <label for="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="yourname"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
             <input
               id="email"
               name="email"
@@ -41,53 +55,21 @@
               placeholder="you@example.com"
               required
             />
-            <small class="error" id="emailError"></small>
           </div>
 
           <div class="field">
-            <label for="password"
-              >Password<span aria-hidden="true">*</span></label
-            >
+            <label for="password">Password</label>
             <input
               id="password"
               name="password"
               type="password"
-              minlength="6"
               placeholder="••••••••"
               required
             />
-            <small class="hint">Min 6 characters.</small>
-            <small class="error" id="passwordError"></small>
           </div>
 
-          <div class="field">
-            <label for="confirm"
-              >Confirm Password<span aria-hidden="true">*</span></label
-            >
-            <input
-              id="confirm"
-              name="confirm"
-              type="password"
-              minlength="6"
-              placeholder="••••••••"
-              required
-            />
-            <small class="error" id="confirmError"></small>
-          </div>
-
-          <div class="field checkbox">
-            <input id="tos" name="tos" type="checkbox" required />
-            <label for="tos">I agree to the Terms of Service</label>
-            <small class="error" id="tosError"></small>
-          </div>
-
-          <button class="btn" type="submit">Create account</button>
-          <div
-            class="form-status"
-            id="formStatus"
-            role="alert"
-            aria-live="polite"
-          ></div>
+          <button class="btn" type="submit">Register</button>
+          <div id="formStatus" class="form-status"></div>
         </form>
 
         <p class="alt">
