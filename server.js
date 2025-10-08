@@ -150,6 +150,11 @@ app.get('/api/me', (req, res) => {
 // Export requireAuth middleware for use in other routes
 export { requireAuth };
 
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

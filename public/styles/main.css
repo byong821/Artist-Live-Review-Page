@@ -8,3 +8,6 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   padding: 20px;
 }
+
+@import url('./register.css');
+@import url('./home.css');
