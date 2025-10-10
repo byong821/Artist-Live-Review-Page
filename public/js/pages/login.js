@@ -1,15 +1,15 @@
 export function renderLoginPage() {
   const app = document.getElementById('app');
-  
+
   app.innerHTML = `
     <header class="header">
       <div class="container header-content">
         <div class="logo">🎤 LiveLy</div>
         <nav class="navbar">
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login" class="active">Login</a></li>
-            <li><a href="/register">Register</a></li>
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/login">Login</a></li>
+            <li><a href="#/register" class="active">Register</a></li>
           </ul>
         </nav>
       </div>
@@ -47,38 +47,40 @@ export function renderLoginPage() {
     </main>
 
     <footer class="footer">
-      <p>© 2025 LiveLy | Built by Brandan Yong and Eric Fu</p>
+      <p class="alt">
+      Already have an account? <a href="#/login">Log in</a>
+      </p>
     </footer>
   `;
-  
+
   const form = document.getElementById('login-form');
   const formStatus = document.getElementById('formStatus');
-  
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     formStatus.textContent = '';
-    
+
     const formData = {
       email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value
+      password: document.getElementById('password').value,
     };
-    
+
     // Validation
     if (!formData.email || !formData.password) {
       formStatus.textContent = 'All fields are required';
       formStatus.style.color = '#c62828';
       return;
     }
-    
+
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         window.location.href = '/';
       } else {

@@ -7,9 +7,10 @@ export function renderRegisterPage() {
         <div class="logo">🎤 LiveLy</div>
         <nav class="navbar">
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register" class="active">Register</a></li>
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/login">Login</a></li>
+            <li><a href="#/register" class="active">Register</a></li>
+
           </ul>
         </nav>
       </div>
@@ -50,7 +51,10 @@ export function renderRegisterPage() {
     </main>
 
     <footer class="footer">
-      <p>© 2025 LiveLy | Built by Brandan Yong and Eric Fu</p>
+      <p class="alt">
+      Already have an account? <a href="#/login">Log in</a>
+      </p>
+
     </footer>
   `;
 
