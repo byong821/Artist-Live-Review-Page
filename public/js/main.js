@@ -1,5 +1,6 @@
 import { renderPage } from './pages/home.js';
 import { renderRegisterPage } from './pages/register.js';
+import { renderLoginPage } from './pages/login.js';
 
 function router() {
   const path = window.location.pathname;
@@ -7,6 +8,9 @@ function router() {
   switch(path) {
     case '/register':
       renderRegisterPage();
+      break;
+    case '/login':
+      renderLoginPage();
       break;
     case '/':
     default:

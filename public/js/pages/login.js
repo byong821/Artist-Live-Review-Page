@@ -1,6 +1,6 @@
-export function renderRegisterPage() {
+export function renderLoginPage() {
   const app = document.getElementById('app');
-
+  
   app.innerHTML = `
     <header class="header">
       <div class="container header-content">
@@ -8,8 +8,8 @@ export function renderRegisterPage() {
         <nav class="navbar">
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register" class="active">Register</a></li>
+            <li><a href="/login" class="active">Login</a></li>
+            <li><a href="/register">Register</a></li>
           </ul>
         </nav>
       </div>
@@ -20,31 +20,28 @@ export function renderRegisterPage() {
 
     <main class="container auth-wrap">
       <section class="auth-card">
-        <h1>Create an Account</h1>
-        <p class="sub">Join the LiveLy community and start sharing reviews.</p>
+        <h1>Welcome back</h1>
+        <p class="sub">Log in to review and rate live performances.</p>
 
-        <form id="register-form" novalidate>
-          <div class="field">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="yourname" required>
-          </div>
-
+        <form id="login-form" novalidate>
           <div class="field">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <small class="error" id="emailError"></small>
           </div>
 
           <div class="field">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+            <small class="error" id="passwordError"></small>
           </div>
 
-          <button class="btn" type="submit">Register</button>
-          <div id="formStatus" class="form-status"></div>
+          <button class="btn" type="submit">Log in</button>
+          <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
         </form>
 
         <p class="alt">
-          Already have an account? <a href="/login">Log in</a>
+          Don't have an account? <a href="/register">Create one</a>
         </p>
       </section>
     </main>
@@ -53,46 +50,39 @@ export function renderRegisterPage() {
       <p>© 2025 LiveLy | Built by Brandan Yong and Eric Fu</p>
     </footer>
   `;
-
-  const form = document.getElementById('register-form');
+  
+  const form = document.getElementById('login-form');
   const formStatus = document.getElementById('formStatus');
-
+  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     formStatus.textContent = '';
-
+    
     const formData = {
-      username: document.getElementById('username').value.trim(),
       email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value,
+      password: document.getElementById('password').value
     };
-
+    
     // Validation
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.email || !formData.password) {
       formStatus.textContent = 'All fields are required';
       formStatus.style.color = '#c62828';
       return;
     }
-
-    if (formData.password.length < 6) {
-      formStatus.textContent = 'Password must be at least 6 characters';
-      formStatus.style.color = '#c62828';
-      return;
-    }
-
+    
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
-
+      
       const data = await response.json();
-
+      
       if (response.ok) {
         window.location.href = '/';
       } else {
-        formStatus.textContent = data.error || 'Registration failed';
+        formStatus.textContent = data.error || 'Login failed';
         formStatus.style.color = '#c62828';
       }
     } catch (error) {
