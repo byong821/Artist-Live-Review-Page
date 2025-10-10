@@ -14,6 +14,7 @@ export async function renderArtistDetail(artistId) {
           <ul>
             <li><a href="#/">Home</a></li>
             <li><a href="#/browse">Browse Artists</a></li>
+            <li><a href="#/review">Leave a Review</a></li>
             <li><a href="#/login">Login</a></li>
             <li><a href="#/register">Register</a></li>
           </ul>
@@ -80,12 +81,18 @@ export async function renderArtistDetail(artistId) {
       </section>
 
       <div class="btn-wrapper">
-        <button class="btn" id="backBtn">← Back to Browse</button>
+        <button class="btn" id="reviewBtn">+ Leave a Review</button>
+        <button class="btn secondary" id="backBtn">← Back to Browse</button>
       </div>
     `;
 
+    // Button handlers
     document.getElementById('backBtn').addEventListener('click', () => {
       window.location.hash = '#/browse';
+    });
+
+    document.getElementById('reviewBtn').addEventListener('click', () => {
+      window.location.hash = `#/artist/${artistId}/review`;
     });
   } catch (err) {
     console.error(err);
@@ -99,7 +106,6 @@ export async function renderArtistDetail(artistId) {
 }
 
 /* ===== Helpers ===== */
-
 function ensureStyleLoaded(href) {
   return new Promise((resolve) => {
     const existing = document.querySelector(`link[href="${href}"]`);

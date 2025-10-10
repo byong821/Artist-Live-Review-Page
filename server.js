@@ -259,3 +259,34 @@ app.get('/api/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to perform search' });
   }
 });
+
+/* ===============================
+   CREATE NEW REVIEW
+================================= */
+app.post('/api/reviews', requireAuth, async (req, res) => {
+  try {
+    const db = getDB();
+    const { artistId, rating, comment, venue, date } = req.body;
+
+    if (!artistId || !rating || !comment || !venue || !date) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const review = {
+      artistId,
+      user: req.session.username,
+      rating: Number(rating),
+      comment,
+      venue,
+      date: new Date(date),
+      createdAt: new Date(),
+    };
+
+    await db.collection('reviews').insertOne(review);
+
+    res.json({ success: true, message: 'Review submitted successfully!' });
+  } catch (err) {
+    console.error('Error posting review:', err);
+    res.status(500).json({ error: 'Failed to submit review' });
+  }
+});

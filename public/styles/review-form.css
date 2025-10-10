@@ -1,0 +1,171 @@
+/* ===============================
+   SCOPED REVIEW PAGE STYLES
+=================================*/
+.review-page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+}
+
+.review-page {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem 6rem;
+}
+
+/* ===============================
+   FORM CARD
+=================================*/
+.review-card {
+  background: #fff;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #111;
+  font-weight: 700;
+}
+
+/* ===============================
+   FORM ELEMENTS
+=================================*/
+.review-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.review-card label {
+  font-weight: 600;
+  color: #222;
+  font-size: 1rem;
+}
+
+.review-card input,
+.review-card select,
+.review-card textarea {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.review-card input:focus,
+.review-card select:focus,
+.review-card textarea:focus {
+  border-color: #ff4e50;
+  box-shadow: 0 0 0 3px rgba(255, 78, 80, 0.15);
+  outline: none;
+}
+
+.review-card textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Arrange smaller inputs (rating, date) on one line */
+.review-card .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.review-card .form-row .form-group {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* ===============================
+   BUTTON
+=================================*/
+.review-card .btn {
+  background: #ff4e50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center;
+  width: auto;
+  min-width: 180px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.review-card .btn:hover {
+  background: #e23c3e;
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   MESSAGES
+=================================*/
+.review-card .message {
+  text-align: center;
+  margin-top: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.review-card .message.success {
+  color: #28a745;
+}
+
+.review-card .message.error {
+  color: #e23c3e;
+}
+
+/* ===============================
+   FOOTER
+=================================*/
+.footer {
+  background-color: #111;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  margin-top: auto;
+}
+
+/* ===============================
+   RESPONSIVE
+=================================*/
+@media (max-width: 768px) {
+  .review-card {
+    padding: 1.8rem 1.2rem;
+    width: 90%;
+  }
+
+  .review-card .btn {
+    width: 100%;
+    min-width: unset;
+  }
+}

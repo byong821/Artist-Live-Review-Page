@@ -12,6 +12,7 @@ export async function renderBrowsePage() {
           <ul>
             <li><a href="#/">Home</a></li>
             <li><a href="#/browse" class="active">Browse Artists</a></li>
+            <li><a href="#/review">Leave a Review</a></li>
             <li><a href="#/login">Login</a></li>
             <li><a href="#/register">Register</a></li>
           </ul>
