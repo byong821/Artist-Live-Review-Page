@@ -1,3 +1,4 @@
+// public/js/pages/home.js
 export function renderPage() {
   const app = document.getElementById('app');
   app.innerHTML = `
@@ -6,27 +7,29 @@ export function renderPage() {
         <div class="logo">🎤 LiveLy</div>
         <nav class="navbar">
           <ul>
-            <li><a href="#/">Home</a></li>
+            <li><a href="#/" class="active">Home</a></li>
+            <li><a href="#/browse">Browse Artists</a></li>
             <li><a href="#/login">Login</a></li>
-            <li><a href="#/register" class="active">Register</a></li>
+            <li><a href="#/register">Register</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <section class="hero">
-      <div class="container hero-content">
-        <div class="welcome">
-          <h1>Welcome to LiveLy</h1>
-          <p>Discover how your favorite artists perform live. Read and share reviews from fans around the world.</p>
-        </div>
-      </div>
-    </section>
+    <!-- 🎶 Vinyl + Needle -->
+    <img src="/img/vinyl.png" alt="Spinning vinyl record" class="vinyl-img" />
+    <img src="/img/needle.png" alt="Record Player Needle" class="needle-img" />
+
+    <main class="home container">
+      <section class="welcome-section">
+        <h1>Welcome to LiveLy</h1>
+        <p>Discover and review live performances from your favorite artists around the world.</p>
+        <a href="#/browse" class="btn explore-btn">Start Exploring</a>
+      </section>
+    </main>
 
     <footer class="footer">
-      <p class="alt">
-      Already have an account? <a href="#/login">Log in</a>
-      </p>
+      <p>© 2025 LiveLy | Built by Eric Fu & Brandan Yong</p>
     </footer>
   `;
 }
