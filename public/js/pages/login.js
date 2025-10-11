@@ -9,6 +9,7 @@ export function renderLoginPage() {
           <ul>
             <li><a href="#/">Home</a></li><li>
             <li><a href="#/browse">Browse Artists</a></li>
+            <li><a href="#/review">Leave a Review</a></li>
             <li><a href="#/login">Login</a></li>
             <li><a href="#/register" class="active">Register</a></li>
           </ul>
