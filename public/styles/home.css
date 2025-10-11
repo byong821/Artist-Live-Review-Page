@@ -1,28 +1,45 @@
-/* ========== GENERAL ========== */
+/* =====================================
+   GLOBAL LAYOUT
+===================================== */
+html,
 body {
+  height: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
   font-family: 'Inter', sans-serif;
   color: #222;
-  background-color: #fafafa;
+  overflow-x: hidden;
 }
 
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
+main.home {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  z-index: 5;
 }
 
-/* ========== HEADER ========== */
+/* =====================================
+   HEADER
+===================================== */
 .header {
   background-color: #111;
   color: white;
   padding: 1rem 0;
+  z-index: 10;
 }
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .logo {
@@ -49,91 +66,108 @@ body {
   text-decoration: underline;
 }
 
-/* ========== HERO SECTION ========== */
-.hero {
-  background: linear-gradient(135deg, #ff4e50, #f9d423);
-  color: white;
-  padding: 4rem 0;
-  text-align: center;
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.welcome {
+/* =====================================
+   WELCOME SECTION
+===================================== */
+.welcome-section {
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 600px;
 }
 
-.welcome h1 {
+.welcome-section h1 {
   font-size: 2.2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  color: #111;
 }
 
-.welcome p {
+.welcome-section p {
   font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 1.5rem;
 }
 
-.search input {
-  padding: 0.6rem;
-  width: 250px;
-  border-radius: 4px;
-  border: none;
-  margin-right: 0.5rem;
-}
-
-.search button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background-color: #111;
+.explore-btn {
+  display: inline-block;
+  background: #ff4e50;
   color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.search button:hover {
-  background-color: #333;
-}
-
-/* ========== TOP ARTISTS ========== */
-.top-artists {
-  background-color: white;
-  padding: 3rem 0;
-  text-align: center;
-}
-
-.top-artists h2 {
-  margin-bottom: 2rem;
-}
-
-.artist-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-}
-
-.artist-card {
-  background-color: #f2f2f2;
+  padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  padding: 1.5rem;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
 }
 
-.artist-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.explore-btn:hover {
+  background: #e23c3e;
 }
 
-/* ========== FOOTER ========== */
+/* =====================================
+   VINYL + NEEDLE
+===================================== */
+.vinyl-img {
+  position: absolute;
+  top: 50%;
+  left: -250px;
+  width: 800px;
+  height: 800px;
+  object-fit: contain;
+  transform: translateY(-50%);
+  animation: spinVinyl 10s linear infinite;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes spinVinyl {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+.needle-img {
+  position: absolute;
+  top: 12%;
+  left: 240px;
+  width: 380px;
+  height: auto;
+  z-index: 2;
+  transform: rotate(18deg);
+  transform-origin: top left;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* =====================================
+   FOOTER
+===================================== */
 .footer {
   background-color: #111;
   color: white;
   text-align: center;
   padding: 1rem 0;
-  margin-top: 2rem;
+  margin-top: auto;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  z-index: 10;
 }
+
+main.home {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  z-index: 5;
+  min-height: calc(100vh - 140px); /* ensures page fills full height */
+}
+
+/* ====================================*
