@@ -1,3 +1,4 @@
+// server.js
 import express from 'express';
 import dotenv from 'dotenv';
 import session from 'express-session';
@@ -36,24 +37,19 @@ const requireAuth = (req, res, next) => {
 /* ===============================
    AUTH ROUTES
 ================================= */
-
-// Register user
 app.post('/api/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const db = getDB();
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password)
       return res.status(400).json({ error: 'All fields are required' });
-    }
 
     const existingUser = await db
       .collection('users')
       .findOne({ $or: [{ email }, { username }] });
-
-    if (existingUser) {
+    if (existingUser)
       return res.status(400).json({ error: 'User already exists' });
-    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await db.collection('users').insertOne({
@@ -77,21 +73,19 @@ app.post('/api/register', async (req, res) => {
         role: 'user',
       },
     });
-  } catch (error) {
-    console.error('Registration error:', error);
+  } catch (err) {
+    console.error('Registration error:', err);
     res.status(500).json({ error: 'Registration failed' });
   }
 });
 
-// Login user
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     const db = getDB();
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
-    }
+    if (!email || !password)
+      return res.status(400).json({ error: 'Email and password required' });
 
     const user = await db.collection('users').findOne({ email });
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
@@ -113,28 +107,22 @@ app.post('/api/login', async (req, res) => {
         role: user.role,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });
   }
 });
 
-// Logout user
 app.post('/api/logout', (req, res) => {
   req.session.destroy((err) => {
-    if (err) {
-      console.error('Logout error:', err);
-      return res.status(500).json({ error: 'Logout failed' });
-    }
+    if (err) return res.status(500).json({ error: 'Logout failed' });
     res.json({ success: true });
   });
 });
 
-// Get current user
 app.get('/api/me', (req, res) => {
   if (!req.session.userId)
     return res.status(401).json({ error: 'Not authenticated' });
-
   res.json({
     id: req.session.userId,
     username: req.session.username,
@@ -143,17 +131,14 @@ app.get('/api/me', (req, res) => {
 });
 
 /* ===============================
-   ARTIST + REVIEWS API
+   ARTISTS + REVIEWS
 ================================= */
-
-// Get all artists
 app.get('/api/artists', async (req, res) => {
   try {
     const db = getDB();
     const artists = await db.collection('artists').find().toArray();
-
-    // Get all reviews to calculate average ratings
     const reviews = await db.collection('reviews').find().toArray();
+
     const ratingMap = reviews.reduce((acc, r) => {
       acc[r.artistId] = acc[r.artistId] || [];
       acc[r.artistId].push(r.rating);
@@ -174,7 +159,6 @@ app.get('/api/artists', async (req, res) => {
   }
 });
 
-// Get a single artist
 app.get('/api/artists/:id', async (req, res) => {
   try {
     const db = getDB();
@@ -182,7 +166,6 @@ app.get('/api/artists/:id', async (req, res) => {
     const artist = await db
       .collection('artists')
       .findOne({ _id: new ObjectId(req.params.id) });
-
     if (!artist) return res.status(404).json({ error: 'Artist not found' });
     res.json(artist);
   } catch (err) {
@@ -191,7 +174,6 @@ app.get('/api/artists/:id', async (req, res) => {
   }
 });
 
-// Get reviews for a specific artist
 app.get('/api/artists/:id/reviews', async (req, res) => {
   try {
     const db = getDB();
@@ -207,53 +189,42 @@ app.get('/api/artists/:id/reviews', async (req, res) => {
 });
 
 /* ===============================
-   SPA FALLBACK
-================================= */
-
-// Serve index.html for non-API routes
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ error: 'API route not found' });
-  }
-  res.sendFile('index.html', { root: 'public' });
-});
-
-/* ===============================
-   START SERVER
-================================= */
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-
-export { requireAuth };
-
-/* ===============================
-   ARTIST SEARCH API
+   SEARCH (with avgRating)
 ================================= */
 app.get('/api/search', async (req, res) => {
   try {
     const db = getDB();
-    const { q } = req.query; // search term
+    const { q } = req.query;
 
-    if (!q || q.trim() === '') {
-      // return all artists if query is empty
-      const allArtists = await db.collection('artists').find().toArray();
-      return res.json(allArtists);
-    }
-
-    // case-insensitive search on name or genre
-    const artists = await db
-      .collection('artists')
-      .find({
+    let query = {};
+    if (q && q.trim() !== '') {
+      query = {
         $or: [
           { name: { $regex: q, $options: 'i' } },
           { genre: { $regex: q, $options: 'i' } },
         ],
-      })
-      .toArray();
+      };
+    }
 
-    res.json(artists);
+    const artists = await db.collection('artists').find(query).toArray();
+    const reviews = await db.collection('reviews').find().toArray();
+
+    // Calculate average ratings
+    const ratingMap = reviews.reduce((acc, r) => {
+      acc[r.artistId] = acc[r.artistId] || [];
+      acc[r.artistId].push(r.rating);
+      return acc;
+    }, {});
+
+    const artistsWithRatings = artists.map((a) => ({
+      ...a,
+      avgRating: ratingMap[a._id?.toString()]
+        ? ratingMap[a._id.toString()].reduce((x, y) => x + y, 0) /
+          ratingMap[a._id.toString()].length
+        : null,
+    }));
+
+    res.json(artistsWithRatings);
   } catch (err) {
     console.error('Search error:', err);
     res.status(500).json({ error: 'Failed to perform search' });
@@ -261,32 +232,86 @@ app.get('/api/search', async (req, res) => {
 });
 
 /* ===============================
-   CREATE NEW REVIEW
+   CREATE REVIEW (auto-create artist)
 ================================= */
-app.post('/api/reviews', requireAuth, async (req, res) => {
+app.post('/api/reviews', async (req, res) => {
   try {
     const db = getDB();
-    const { artistId, rating, comment, venue, date } = req.body;
+    const {
+      artistName,
+      rating,
+      comment,
+      venue,
+      concertDate,
+      userId,
+      username,
+    } = req.body;
 
-    if (!artistId || !rating || !comment || !venue || !date) {
+    console.log('📩 Review payload:', req.body);
+
+    if (
+      !artistName?.trim() ||
+      !rating ||
+      !comment?.trim() ||
+      !venue?.trim() ||
+      !concertDate ||
+      !userId ||
+      !username
+    )
       return res.status(400).json({ error: 'All fields are required.' });
+
+    const dateObj = new Date(concertDate);
+    if (isNaN(dateObj.getTime()))
+      return res.status(400).json({ error: 'Invalid concert date format.' });
+
+    let artist = await db
+      .collection('artists')
+      .findOne({ name: artistName.trim() });
+    if (!artist) {
+      const newArtist = {
+        name: artistName.trim(),
+        genre: 'Unknown',
+        bio: '',
+        image: '',
+        createdAt: new Date(),
+      };
+      const result = await db.collection('artists').insertOne(newArtist);
+      artist = { ...newArtist, _id: result.insertedId };
     }
 
     const review = {
-      artistId,
-      user: req.session.username,
-      rating: Number(rating),
-      comment,
-      venue,
-      date: new Date(date),
+      artistId: artist._id.toString(),
+      userId,
+      username,
+      rating: parseInt(rating, 10),
+      comment: comment.trim(),
+      venue: venue.trim(),
+      concertDate: dateObj,
       createdAt: new Date(),
     };
 
     await db.collection('reviews').insertOne(review);
+    console.log('✅ Review added:', review);
 
-    res.json({ success: true, message: 'Review submitted successfully!' });
+    res.json({ success: true, message: `Review for ${artist.name} added!` });
   } catch (err) {
-    console.error('Error posting review:', err);
-    res.status(500).json({ error: 'Failed to submit review' });
+    console.error('💥 Error submitting review:', err);
+    res.status(500).json({ error: 'Failed to submit review.' });
   }
 });
+
+/* ===============================
+   SPA FALLBACK
+================================= */
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+/* ===============================
+   START SERVER
+================================= */
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});
+
+export { requireAuth };

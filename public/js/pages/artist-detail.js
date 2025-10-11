@@ -1,8 +1,6 @@
 // public/js/pages/artist-detail.js
-
 export async function renderArtistDetail(artistId) {
   const app = document.getElementById('app');
-
   await ensureStyleLoaded('/styles/artist-detail.css');
 
   // ===== BASE STRUCTURE =====
@@ -45,14 +43,8 @@ export async function renderArtistDetail(artistId) {
     const main = document.querySelector('main');
     main.innerHTML = `
       <section class="artist-info">
-        <img 
-          src="${artist.image || '/img/default-artist.jpg'}" 
-          alt="${artist.name}" 
-          onerror="this.src='/img/default-artist.jpg'"
-        >
         <div class="artist-meta">
           <h1>${artist.name}</h1>
-          <p><strong>Genre:</strong> ${artist.genre || 'Unknown'}</p>
           <p><strong>⭐ ${calcAverage(reviews)} / 5</strong></p>
         </div>
       </section>
@@ -67,11 +59,13 @@ export async function renderArtistDetail(artistId) {
                     (r) => `
                     <div class="review-card">
                       <div class="review-header">
-                        <strong>${r.user || 'Anonymous'}</strong>
+                        <strong>${r.username || 'Anonymous'}</strong>
                         <span>⭐ ${r.rating}</span>
                       </div>
-                      <p>${r.comment}</p>
-                      <small>${new Date(r.date).toLocaleDateString()}</small>
+                      <p><strong>Comments:</strong> ${r.comment}</p>
+                      <p><small><strong>Date Seen:</strong> ${new Date(
+                        r.concertDate
+                      ).toLocaleDateString()}</small></p>
                     </div>`
                   )
                   .join('')
@@ -81,18 +75,13 @@ export async function renderArtistDetail(artistId) {
       </section>
 
       <div class="btn-wrapper">
-        <button class="btn" id="reviewBtn">+ Leave a Review</button>
         <button class="btn secondary" id="backBtn">← Back to Browse</button>
       </div>
     `;
 
-    // Button handlers
+    // Back button
     document.getElementById('backBtn').addEventListener('click', () => {
       window.location.hash = '#/browse';
-    });
-
-    document.getElementById('reviewBtn').addEventListener('click', () => {
-      window.location.hash = `#/artist/${artistId}/review`;
     });
   } catch (err) {
     console.error(err);

@@ -1,5 +1,4 @@
 // public/js/pages/browse.js
-
 export async function renderBrowsePage() {
   const app = document.getElementById('app');
   loadStyle('/styles/browse.css');
@@ -26,7 +25,7 @@ export async function renderBrowsePage() {
         <input 
           type="text" 
           id="searchInput" 
-          placeholder="Search by name or genre..." 
+          placeholder="Search artists by name..." 
         />
       </div>
       <div id="artistsList" class="artists-grid">Loading...</div>
@@ -40,10 +39,9 @@ export async function renderBrowsePage() {
   const searchInput = document.getElementById('searchInput');
   const artistsList = document.getElementById('artistsList');
 
-  // Initial load
-  fetchArtists();
+  await fetchArtists();
 
-  // Debounced search listener
+  // Debounced search
   let debounceTimer;
   searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
@@ -53,27 +51,42 @@ export async function renderBrowsePage() {
   });
 
   async function fetchArtists(query = '') {
+    artistsList.innerHTML = `<p>Loading...</p>`;
+
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-      const artists = await res.json();
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, {
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (!Array.isArray(data)) throw new Error('Invalid response format');
+
+      const artists = data.sort(
+        (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+      );
 
       if (!artists.length) {
         artistsList.innerHTML = `<p>No artists found.</p>`;
         return;
       }
 
+      // 🟢 Display artist name + average rating only
       artistsList.innerHTML = artists
         .map(
           (a) => `
           <div class="artist-card" data-id="${a._id}">
-            <img src="${a.image || '/img/default-artist.jpg'}" alt="${a.name}">
             <h3>${a.name}</h3>
-            <p>${a.genre || 'Unknown Genre'}</p>
+            ${
+              a.avgRating && !isNaN(a.avgRating)
+                ? `<p class="rating">⭐ ${Number(a.avgRating).toFixed(1)} / 5</p>`
+                : `<p class="rating">No ratings yet</p>`
+            }
           </div>`
         )
         .join('');
 
-      // Add click listeners to cards
       document.querySelectorAll('.artist-card').forEach((card) => {
         card.addEventListener('click', () => {
           const id = card.getAttribute('data-id');
@@ -81,8 +94,8 @@ export async function renderBrowsePage() {
         });
       });
     } catch (err) {
-      console.error(err);
-      artistsList.innerHTML = `<p>Error loading artists.</p>`;
+      console.error('Error loading artists:', err);
+      artistsList.innerHTML = `<p>⚠️ Error loading artists.</p>`;
     }
   }
 }

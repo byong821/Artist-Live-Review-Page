@@ -3,17 +3,10 @@ export async function renderReviewForm() {
   const app = document.getElementById('app');
   loadStyle('/styles/review-form.css');
 
-  // Check login first
-  //const user = await getCurrentUser();
-  //if (!user) {
-  //window.location.hash = '#/login';
-  //return;
-  //}
+  // TEMPORARY LOGGED-IN USER (for local testing)
+  const user = { userId: 'dev123', username: 'TestUser' };
 
-  // TEMPORARY BYPASS (for testing only)
-  const user = { username: 'TestUser' };
-
-  // No artist info fetch needed anymore
+  // ===== PAGE STRUCTURE =====
   app.innerHTML = `
     <div class="review-page-container">
       <header class="header">
@@ -81,26 +74,54 @@ export async function renderReviewForm() {
     </div>
   `;
 
-  // Form behavior
+  // ===== FORM HANDLING =====
   const form = document.getElementById('reviewForm');
   const message = document.getElementById('formMessage');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = {
-      artistName: document.getElementById('artistName').value.trim(),
-      rating: document.getElementById('rating').value,
-      comment: document.getElementById('comment').value.trim(),
-      venue: document.getElementById('venue').value.trim(),
-      date: document.getElementById('date').value,
-    };
+    const artistName =
+      document.getElementById('artistName')?.value?.trim() || '';
+    const rating = document.getElementById('rating')?.value?.trim() || '';
+    const comment = document.getElementById('comment')?.value?.trim() || '';
+    const venue = document.getElementById('venue')?.value?.trim() || '';
+    const concertDate = document.getElementById('date')?.value?.trim() || '';
 
-    if (Object.values(data).some((v) => !v)) {
-      message.textContent = 'Please fill out all fields.';
+    // Track missing fields for debugging
+    const missingFields = [];
+    if (!artistName) missingFields.push('artistName');
+    if (!rating) missingFields.push('rating');
+    if (!comment) missingFields.push('comment');
+    if (!venue) missingFields.push('venue');
+    if (!concertDate) missingFields.push('concertDate');
+
+    if (missingFields.length > 0) {
+      console.warn('⚠️ Missing fields:', missingFields.join(', '));
+      message.textContent = `⚠️ Please fill out all fields (${missingFields.join(', ')}).`;
       message.className = 'message error';
       return;
     }
+
+    // Additional front-end date check
+    if (isNaN(new Date(concertDate).getTime())) {
+      message.textContent = '⚠️ Invalid date format.';
+      message.className = 'message error';
+      console.error('Invalid date value:', concertDate);
+      return;
+    }
+
+    const data = {
+      artistName,
+      rating,
+      comment,
+      venue,
+      concertDate,
+      userId: user.userId,
+      username: user.username,
+    };
+
+    console.log('📤 Submitting review:', data);
 
     try {
       const res = await fetch('/api/reviews', {
@@ -110,28 +131,29 @@ export async function renderReviewForm() {
       });
 
       const result = await res.json();
+      console.log('📥 Server response:', result);
+
       if (res.ok) {
-        message.textContent = '✅ Review submitted successfully!';
+        message.textContent = `✅ Review for "${artistName}" submitted successfully!`;
         message.className = 'message success';
         form.reset();
 
         setTimeout(() => {
           window.location.hash = '#/browse';
-        }, 1500);
+        }, 1800);
       } else {
         message.textContent = result.error || 'Something went wrong.';
         message.className = 'message error';
       }
     } catch (err) {
-      console.error(err);
+      console.error('💥 Error submitting review:', err);
       message.textContent = '⚠️ Failed to submit review.';
       message.className = 'message error';
     }
   });
 }
 
-/* ===== Helpers ===== */
-
+/* ===== HELPERS ===== */
 function loadStyle(href) {
   if (!document.querySelector(`link[href="${href}"]`)) {
     const link = document.createElement('link');

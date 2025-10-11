@@ -31,6 +31,9 @@ async function router() {
     case hash === '#/browse':
       renderBrowsePage();
       break;
+    case hash === '#/browse':
+      await renderBrowsePage(); //  ensure it refetches each time
+      break;
 
     case hash === '#/review':
       renderReviewForm();
